@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inaz Izadi | Mechanical Engineering Portfolio</title>
+    <style>
+        /* --- Core Variables & Theme (Light Mode) --- */
+        :root {
+            /* Backgrounds */
+            --bg-body: #eaf0fa;
+            --bg-card: #ffffff;
+            --bg-prompt: #f8faff;
+            --bg-grad-1: rgba(224, 195, 252, 0.5);
+            --bg-grad-2: rgba(142, 197, 252, 0.5);
+            --nav-bg: rgba(255, 255, 255, 0.85);
+
+            /* Texts */
+            --text-main: #2b3a4a;
+            --text-muted: #4a5568;
+            --text-soft: #718096;
+
+            /* Accents */
+            --accent-blue: #4facfe;
+            --accent-teal: #00f2fe;
+            --accent-coral: #ff9a9e;
+
+            /* Borders & Shadows */
+            --border-color: #64748b;
+            --shadow-color: rgba(100, 116, 139, 0.15);
+
+            /* Baymax Specific */
+            --baymax-body: #ffffff;
+            --baymax-ink: #475569;
+            --baymax-glow: rgba(255, 255, 255, 0.5);
+        }
+
+        /* --- Dark Mode Theme --- */
+        body.dark-mode {
+            /* Backgrounds */
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --bg-prompt: #0b1120;
+            --bg-grad-1: rgba(79, 172, 254, 0.1);
+            --bg-grad-2: rgba(255, 154, 158, 0.1);
+            --nav-bg: rgba(30, 41, 59, 0.85);
+
+            /* Texts */
+            --text-main: #f8fafc;
+            --text-muted: #cbd5e1;
+            --text-soft: #94a3b8;
+
+            /* Borders & Shadows */
+            --border-color: #475569;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+
+            /* Baymax Specific */
+            --baymax-body: #e2e8f0;
+            --baymax-ink: #334155;
+            --baymax-glow: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(120deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+            scroll-behavior: smooth;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* --- Theme Toggle Button --- */
+        .theme-toggle {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0 var(--border-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: var(--text-main);
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-3px);
+            box-shadow: 5px 5px 0 var(--border-color);
+        }
+
+        /* --- 1. Microfluidic Channels --- */
+        .fluid-channel {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(ellipse at center, transparent 30%, rgba(79, 172, 254, 0.1) 50%, transparent 70%);
+            background-size: 200% 200%;
+            animation: flowChannel 12s infinite alternate ease-in-out;
+            z-index: -6;
+        }
+
+        @keyframes flowChannel {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* --- 2. Giant Floating Baymax Background --- */
+        .giant-baymax {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 60vw; height: 60vw; max-width: 800px; max-height: 800px;
+            background: radial-gradient(circle, var(--baymax-glow) 30%, transparent 75%);
+            border-radius: 50%; z-index: -5; display: flex; align-items: center; justify-content: center;
+            pointer-events: none; animation: breatheGiantBaymax 6s infinite ease-in-out alternate;
+        }
+
+        .gb-eyes {
+            position: relative; width: 25%; height: 20px;
+            display: flex; align-items: center; justify-content: space-between;
+            opacity: 0.1; /* شفافیت کم شده برای جلوگیری از تداخل با متن */
+        }
+        .gb-eyes::before, .gb-eyes::after {
+            content: ''; width: 45px; height: 45px; background-color: var(--baymax-ink); border-radius: 50%;
+        }
+        .gb-eyes .line {
+            position: absolute; top: 50%; left: 25px; right: 25px; height: 8px;
+            background-color: var(--baymax-ink); transform: translateY(-50%);
+        }
+
+        @keyframes breatheGiantBaymax {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            100% { transform: translate(-50%, -50%) scale(1.04); }
+        }
+
+        /* --- 3. Floating Capsules --- */
+        .capsule {
+            position: fixed; width: 50px; height: 25px; border-radius: 25px;
+            background: linear-gradient(90deg, var(--accent-blue) 50%, var(--accent-coral) 50%);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.3); z-index: -4; opacity: 0.85;
+            animation: floatCapsule 20s infinite ease-in-out alternate; pointer-events: none;
+            border: 2px solid var(--border-color);
+        }
+
+        .cap-1 { top: 15%; left: 10%; background: linear-gradient(90deg, var(--accent-blue) 50%, var(--bg-card) 50%); animation-duration: 25s; }
+        .cap-2 { top: 75%; left: 80%; width: 40px; height: 20px; animation-duration: 30s; animation-delay: -5s; }
+        .cap-3 { top: 30%; left: 85%; width: 60px; height: 30px; background: linear-gradient(90deg, var(--accent-teal) 50%, var(--bg-card) 50%); animation-duration: 22s; animation-delay: -10s; }
+        .cap-4 { top: 85%; left: 15%; width: 30px; height: 15px; animation-duration: 28s; animation-delay: -15s; }
+        .cap-5 { top: 50%; left: 5%; width: 45px; height: 22px; background: linear-gradient(90deg, var(--accent-coral) 50%, var(--bg-card) 50%); animation-duration: 35s; animation-delay: -8s; }
+
+        @keyframes floatCapsule {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(60px, -90px) rotate(180deg); }
+            100% { transform: translate(-40px, 120px) rotate(360deg); }
+        }
+
+        /* --- 4. Interactive Sensor Glow --- */
+        .ambient-glow {
+            position: fixed; top: 0; left: 0; width: 150px; height: 150px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 75%);
+            border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%);
+            transition: transform 0.05s linear; z-index: -1; mix-blend-mode: overlay;
+        }
+
+        /* --- Navigation --- */
+        nav {
+            position: fixed; top: 0; width: 100%;
+            background: var(--nav-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            padding: 1rem 2rem; display: flex; justify-content: center; z-index: 100;
+            box-shadow: 0 4px 30px var(--shadow-color); border-bottom: 2px solid var(--border-color);
+            transition: background 0.4s ease, border-color 0.4s ease;
+        }
+
+        .nav-links { list-style: none; display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+        .nav-links a { text-decoration: none; color: var(--text-muted); font-weight: 700; font-size: 0.95rem; transition: color 0.3s ease; }
+        .nav-links a:hover { color: var(--accent-blue); }
+
+        /* --- General Section Styles --- */
+        section { padding: 6rem 2rem; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
+        .section-title {
+            font-size: 2.5rem; color: var(--text-main); margin-bottom: 4rem; text-align: center;
+            font-weight: 800; position: relative; transition: color 0.4s ease;
+        }
+        .section-title::after {
+            content: ''; display: block; width: 80px; height: 4px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-coral));
+            margin: 10px auto 0; border-radius: 2px;
+        }
+
+        /* --- Hero Section --- */
+        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 6rem 2rem 2rem; }
+        .hero-content { display: flex; align-items: center; gap: 4rem; flex-wrap: wrap-reverse; justify-content: center; }
+        .hero-text { max-width: 600px; text-align: left; position: relative; z-index: 2; }
+
+        .slogan {
+            font-size: 1.6rem; background: linear-gradient(45deg, var(--accent-blue), var(--accent-coral));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-style: italic; font-weight: 700; margin-bottom: 1.5rem; letter-spacing: 0.5px;
+        }
+
+        .subtitle { font-size: 1.05rem; color: var(--text-soft); font-weight: 700; letter-spacing: 1.5px; margin-bottom: 1rem; text-transform: uppercase; }
+        .title { font-size: 5.5rem; font-weight: 800; line-height: 1; margin-bottom: 1.5rem; text-transform: uppercase; }
+        .name-filled { color: var(--text-main); }
+        .name-hollow { color: transparent; -webkit-text-stroke: 2px var(--text-main); transition: -webkit-text-stroke 0.4s ease; }
+        .bio { font-size: 1.25rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem; font-weight: 500; }
+
+        .cta-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .btn {
+            padding: 0.9rem 2.5rem; border-radius: 30px; text-decoration: none; font-weight: 700;
+            font-size: 1.05rem; transition: all 0.3s ease; cursor: pointer; text-align: center;
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-teal)); color: white;
+            border: 2px solid var(--border-color); box-shadow: 4px 4px 0 var(--border-color);
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 6px 6px 0 var(--border-color); }
+        .btn-secondary {
+            background-color: var(--bg-card); color: var(--text-main);
+            border: 2px solid var(--border-color); box-shadow: 4px 4px 0 var(--border-color);
+        }
+        .btn-secondary:hover { background-color: var(--bg-body); transform: translateY(-3px); box-shadow: 6px 6px 0 var(--border-color); }
+
+        /* --- Image & Interactive Mini Baymax --- */
+        .image-section { position: relative; z-index: 2; }
+        .profile-container { position: relative; width: 320px; height: 320px; z-index: 2; }
+        .profile-img {
+            width: 100%; height: 100%; object-fit: cover; border-radius: 50%; position: relative; z-index: 2;
+            border: 4px solid var(--border-color); background-color: var(--bg-card); transition: border-color 0.4s ease;
+        }
+        .animated-border {
+            position: absolute; top: -12px; left: -12px; right: -12px; bottom: -12px; border-radius: 50%;
+            background: conic-gradient(from 0deg, var(--accent-coral) 0%, var(--accent-blue) 33%, var(--accent-teal) 66%, var(--accent-coral) 100%);
+            z-index: 1; animation: rotateBorder 5s linear infinite;
+        }
+        @keyframes rotateBorder { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Interactive Mini Baymax */
+        .mini-baymax {
+            position: absolute; bottom: 10px; right: -40px; width: 100px;
+            display: flex; flex-direction: column; align-items: center; z-index: 10; cursor: pointer; transition: transform 0.3s ease;
+        }
+        .mini-baymax:hover { transform: scale(1.05); }
+
+        .mb-say-hi {
+            position: absolute; top: -25px; right: -15px; background: var(--bg-card); color: var(--text-main);
+            padding: 4px 12px; border: 2px solid var(--border-color); border-radius: 12px; font-size: 0.85rem; font-weight: bold;
+            opacity: 0; transform: translateY(5px); transition: all 0.3s ease; pointer-events: none;
+        }
+        .mb-say-hi::after {
+            content: ''; position: absolute; bottom: -6px; left: 10px; border-width: 6px 6px 0 0;
+            border-style: solid; border-color: var(--border-color) transparent transparent transparent;
+        }
+
+        .mb-head {
+            width: 50px; height: 35px; background: var(--baymax-body); border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            border: 2.5px solid var(--baymax-ink); position: relative; z-index: 3; transition: background 0.4s ease;
+        }
+        .mb-eyes { width: 22px; height: 6px; position: relative; display: flex; justify-content: space-between; align-items: center; }
+        .mb-eyes::before, .mb-eyes::after { content: ''; width: 5px; height: 5px; background: var(--baymax-ink); border-radius: 50%; }
+        .mb-eyes .line { position: absolute; left: 3px; right: 3px; height: 2px; background: var(--baymax-ink); }
+
+        .mb-body {
+            width: 90px; height: 100px; background: var(--baymax-body); border-radius: 45% 45% 30% 30%;
+            margin-top: -10px; position: relative; z-index: 2; border: 2.5px solid var(--baymax-ink); transition: background 0.4s ease;
+        }
+        .mb-arm {
+            position: absolute; top: 15px; width: 25px; height: 70px; background: var(--baymax-body);
+            border-radius: 15px; transform-origin: top center; border: 2.5px solid var(--baymax-ink); transition: background 0.4s ease;
+        }
+        .mb-arm.left { left: -10px; transform: rotate(15deg); z-index: 1; }
+        .mb-arm.right { right: -10px; transform: rotate(-15deg); z-index: 4; transition: transform 0.3s ease; }
+
+        .mini-baymax:hover .mb-arm.right { animation: waveHover 1.5s infinite ease-in-out; }
+        .mini-baymax:hover .mb-say-hi { opacity: 1; transform: translateY(-10px); }
+
+        @keyframes waveHover {
+            0% { transform: rotate(-15deg); } 20% { transform: rotate(-120deg); }
+            40% { transform: rotate(-90deg); } 60% { transform: rotate(-120deg); }
+            80% { transform: rotate(-90deg); } 100% { transform: rotate(-15deg); }
+        }
+
+        /* --- Shared Card Styles (Boxed) --- */
+        .info-card {
+            background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 20px;
+            padding: 2rem; box-shadow: 6px 6px 0 var(--shadow-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.4s ease; position: relative; overflow: hidden;
+        }
+        .info-card:hover { transform: translateY(-5px); box-shadow: 8px 8px 0 var(--border-color); }
+
+        /* --- Research Interests Section --- */
+        .research-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 3rem;
+            width: 100%;
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+        .research-card {
+            width: 260px;
+            max-width: 100%;
+            text-align: center;
+            transition: transform 0.4s ease;
+        }
+        .research-card:hover { transform: translateY(-10px) scale(1.05); }
+        .research-icon { font-size: 4.5rem; margin-bottom: 1.5rem; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1)); }
+        .research-title { font-size: 1.4rem; font-weight: 800; color: var(--text-main); line-height: 1.5; }
+
+        /* --- Publications Section --- */
+        .pub-container { max-width: 900px; margin: 0 auto; }
+        .pub-card { display: flex; align-items: flex-start; gap: 1.5rem; }
+        .pub-icon { font-size: 3rem; line-height: 1; }
+        .pub-title { font-size: 1.25rem; font-weight: 800; color: var(--text-main); margin-bottom: 1rem; line-height: 1.4; }
+        .pub-status {
+            display: inline-block; background: rgba(79, 172, 254, 0.15); color: var(--accent-blue);
+            padding: 0.4rem 1rem; border-radius: 20px; font-weight: 700; font-size: 0.9rem; border: 1px solid var(--accent-blue);
+        }
+
+        /* ======================================================== */
+        /* --- Experience Section --- */
+        /* ======================================================== */
+        .timeline { position: relative; max-width: 800px; margin: 0 auto; padding-left: 1.5rem; padding-top: 1.5rem; }
+        .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--border-color); border-radius: 2px; }
+        .timeline-item { position: relative; margin-bottom: 4rem; padding-left: 2rem; }
+        .timeline-item:last-child { margin-bottom: 0; }
+
+        .timeline-dot {
+            position: absolute; left: -9px; top: 35px; width: 18px; height: 18px;
+            background: var(--bg-card); border: 3px solid var(--accent-coral);
+            border-radius: 50%; z-index: 10; transition: all 0.4s ease;
+        }
+
+        .timeline-item:hover .timeline-dot { transform: scale(1.4); box-shadow: 0 0 12px var(--accent-coral); }
+        .timeline-item:nth-child(2) .timeline-dot { border-color: var(--accent-blue); }
+        .timeline-item:nth-child(2):hover .timeline-dot { background: var(--accent-blue); box-shadow: 0 0 12px var(--accent-blue);}
+        .timeline-item:nth-child(3) .timeline-dot { border-color: var(--accent-teal); }
+        .timeline-item:nth-child(3):hover .timeline-dot { background: var(--accent-teal); box-shadow: 0 0 12px var(--accent-teal);}
+        .timeline-item:nth-child(4) .timeline-dot { border-color: #a18cd1; }
+        .timeline-item:nth-child(4):hover .timeline-dot { background: #a18cd1; box-shadow: 0 0 12px #a18cd1;}
+
+        .timeline-content.info-card {
+            overflow: visible !important;
+            padding: 1.8rem 2rem;
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+        }
+        body.dark-mode .timeline-content.info-card { background: rgba(30, 41, 59, 0.7); }
+
+        .exp-content-wrapper { position: relative; z-index: 10; width: 70%; }
+
+        .exp-media-bg {
+            position: absolute; top: -15px; bottom: -15px; right: -5%; width: 45%;
+            z-index: 1; pointer-events: none;
+            transition: transform 0.6s ease, opacity 0.6s ease;
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 45%);
+            mask-image: linear-gradient(to right, transparent 0%, black 45%);
+            opacity: 0.5; border-radius: 0 20px 20px 0;
+        }
+
+        .timeline-item:nth-child(even) .exp-content-wrapper { margin-left: auto; }
+        .timeline-item:nth-child(even) .exp-media-bg {
+            right: auto; left: -5%; border-radius: 20px 0 0 20px;
+            -webkit-mask-image: linear-gradient(to left, transparent 0%, black 45%);
+            mask-image: linear-gradient(to left, transparent 0%, black 45%);
+        }
+
+        .exp-media-bg img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1)); }
+        .timeline-item:hover .exp-media-bg { transform: translateY(-5px) scale(1.03) rotate(2deg); opacity: 0.85; }
+        .timeline-item:nth-child(even):hover .exp-media-bg { transform: translateY(-5px) scale(1.03) rotate(-2deg); }
+
+        .tl-role { font-size: 1.25rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.25rem; line-height: 1.2;}
+        .tl-lab { font-size: 0.9rem; color: var(--accent-blue); font-weight: 700; margin-bottom: 1rem; line-height: 1.3; }
+        .tl-desc { font-size: 0.85rem; color: var(--text-soft); font-weight: 500; line-height: 1.6; margin-bottom: 1rem; }
+
+        /* Skills tags */
+        .item-skills { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+        .mini-badge { font-size: 0.75rem; background: rgba(79, 172, 254, 0.12); color: var(--accent-blue); padding: 0.25rem 0.6rem; border-radius: 10px; font-weight: 700; border: 1px solid var(--accent-blue); }
+
+        /* ======================================================== */
+        /* --- Projects Section --- */
+        /* ======================================================== */
+        .projects-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 1rem;
+        }
+
+        .project-card {
+            position: relative; display: flex; align-items: flex-end;
+            background: #0f172a; border: none; border-radius: 20px;
+            width: calc(33.333% - 1.67rem);
+            min-height: 320px; overflow: hidden; box-shadow: 0 10px 25px var(--shadow-color);
+            transition: transform 0.4s ease, box-shadow 0.4s ease; padding: 0; z-index: 2;
+        }
+        .project-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.25); }
+
+        .project-image-container {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; z-index: 1;
+            transition: transform 0.8s ease; pointer-events: none;
+        }
+        .project-image-container img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: opacity 0.5s ease; }
+        .project-card:hover .project-image-container { transform: scale(1.08); }
+        .project-card:hover .project-image-container img { opacity: 0.3; }
+
+        .project-content {
+            flex: 1; position: relative; z-index: 10;
+            background: linear-gradient(to top, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.6) 70%, transparent 100%);
+            padding: 3rem 1.5rem 1.5rem 1.5rem; width: 100%; margin: 0;
+        }
+
+        .project-title { font-size: 1.35rem; font-weight: 800; color: #ffffff; margin-bottom: 0.4rem; line-height: 1.3; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .project-subtitle { font-size: 0.9rem; color: var(--accent-teal); margin-bottom: 1rem; font-weight: 600; text-shadow: 0 2px 3px rgba(0,0,0,0.8); }
+        .project-content .item-skills .mini-badge { background: rgba(255, 255, 255, 0.15); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); backdrop-filter: blur(8px); }
+
+        /* --- TA/Teaching & Honors List (Clean & Minimal - NO BOXES) --- */
+        .list-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1rem 4rem; max-width: 950px; margin: 0 auto; }
+        .list-card { display: flex; align-items: center; gap: 1.25rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border-color); transition: transform 0.3s ease, border-color 0.3s ease; background: transparent; border-radius: 0; box-shadow: none; }
+        .list-card:last-child { border-bottom: none; }
+        .list-card:hover { transform: translateX(8px); border-bottom-color: var(--accent-blue); }
+        .list-icon { font-size: 2.2rem; opacity: 0.9; }
+        .list-text { font-weight: 800; color: var(--text-main); font-size: 1.15rem; display: block; }
+        .list-subtext { font-size: 0.9rem; color: var(--text-soft); font-weight: 500; display: block; margin-top: 0.4rem; line-height: 1.4; }
+
+        /* --- Contact Section --- */
+        .contact-container { max-width: 1000px; margin: 0 auto; }
+        .contact-card { display: flex; align-items: center; justify-content: space-between; gap: 4rem; background: transparent; border: none; padding: 2rem 0; box-shadow: none; }
+        .contact-text-wrap { flex: 1; text-align: left; }
+        .contact-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+        .contact-title { font-size: 2rem; font-weight: 800; color: var(--text-main); margin-bottom: 1rem; }
+        .contact-desc { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 0; font-weight: 500; line-height: 1.6; }
+
+        .email-buttons { flex: 1; display: flex; flex-direction: column; gap: 1rem; width: 100%; }
+        .contact-email-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 1.1rem; font-weight: 700; color: var(--text-main); background: var(--bg-prompt); border: 2px dashed var(--accent-blue); padding: 1rem 2rem; border-radius: 30px; text-decoration: none; transition: all 0.3s ease; width: 100%; }
+        .contact-email-btn:hover { background: var(--accent-blue); color: white; border-color: var(--border-color); transform: scale(1.05); box-shadow: 4px 4px 0 var(--border-color); }
+        .contact-email-btn.secondary { border-color: var(--accent-coral); }
+        .contact-email-btn.secondary:hover { background: var(--accent-coral); }
+
+        /* --- Footer --- */
+        footer { text-align: center; padding: 3rem; margin-top: 2rem; background: var(--bg-grad-1); border-top: 2px solid var(--border-color); }
+        .footer-text { font-weight: 700; color: var(--text-main); }
+
+        /* ================= MEDIA QUERIES ================= */
+        @media (max-width: 768px) {
+            .hero-content { text-align: center; }
+            .hero-text { text-align: center; }
+            .cta-buttons { justify-content: center; }
+            .title { font-size: 4rem; }
+            .giant-baymax { width: 90vw; height: 90vw; }
+            .gb-eyes { width: 40%; opacity: 0.1; }
+            .mini-baymax { right: 0; bottom: -20px; }
+
+            .timeline { padding-left: 1rem; }
+            .timeline-item { padding-left: 1.5rem; margin-bottom: 4rem; }
+            .timeline-content.info-card { padding: 1.5rem; }
+            .exp-content-wrapper, .timeline-item:nth-child(even) .exp-content-wrapper { width: 100%; margin-left: 0; }
+            .exp-media-bg, .timeline-item:nth-child(even) .exp-media-bg {
+                top: 0; bottom: 0; right: 0 !important; left: 0 !important;
+                width: 100%; height: 100%; border-radius: 20px !important;
+                -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 100%) !important;
+                mask-image: linear-gradient(to bottom, transparent 0%, black 100%) !important;
+                opacity: 0.15 !important; transform: none !important;
+            }
+
+            .pub-card { flex-direction: column; text-align: center; align-items: center; }
+
+            .projects-container { flex-direction: column; gap: 2rem; }
+
+            .project-card, .project-card:nth-child(even) {
+                width: 100%;
+                min-height: 320px; padding: 0; flex-direction: column; justify-content: flex-end; text-align: left;
+            }
+            .project-content {
+                padding: 3rem 1.5rem 1.5rem 1.5rem;
+                background: linear-gradient(to top, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.6) 70%, transparent 100%);
+                align-items: flex-start;
+            }
+            .project-image-container {
+                position: absolute; top: 0; left: 0 !important; right: 0 !important; bottom: 0; width: 100%; height: 100%; margin: 0; aspect-ratio: auto;
+            }
+            .project-card:hover .project-image-container { transform: scale(1.05); }
+
+            /* Contact Responsive */
+            .contact-card { flex-direction: column; text-align: center; gap: 2rem; padding: 1rem; }
+            .contact-text-wrap { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Theme Toggle Button -->
+    <button id="theme-toggle" class="theme-toggle" title="Toggle Dark Mode">🌙</button>
+
+    <div class="fluid-channel"></div>
+
+    <div class="giant-baymax">
+        <div class="gb-eyes">
+            <div class="line"></div>
+        </div>
+    </div>
+
+    <div class="capsule cap-1"></div>
+    <div class="capsule cap-2"></div>
+    <div class="capsule cap-3"></div>
+    <div class="capsule cap-4"></div>
+    <div class="capsule cap-5"></div>
+
+    <div class="ambient-glow" id="glow"></div>
+
+    <nav>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#research">Research</a></li>
+            <li><a href="#publications">Publications</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#teaching">Leadership</a></li>
+            <li><a href="#honors">Honors</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero" id="about">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h3 class="slogan">"We all need a Baymax."</h3>
+                <p class="subtitle">B.Sc. Mechanical Engineering | Sharif University of Technology</p>
+                <h1 class="title">
+                    <span class="name-filled">Inaz</span><br>
+                    <span class="name-hollow">Izadi</span>
+                </h1>
+                <p class="bio">
+                    "Passionate about <strong>social robotics</strong> and <strong>biofluids</strong>, leveraging mechanical engineering to help people."
+                </p>
+
+                <div class="cta-buttons">
+                    <a href="https://www.linkedin.com/in/inaz-izadi/" target="_blank" class="btn btn-primary">LinkedIn</a>
+                    <a href="#contact" class="btn btn-primary">Contact Me</a>
+                    <a href="#projects" class="btn btn-secondary">View Projects</a>
+                </div>
+            </div>
+
+            <div class="image-section">
+                <div class="profile-container">
+                    <div class="animated-border"></div>
+                    <img src="me.jfif" alt="Inaz Izadi Profile Photo" class="profile-img">
+                </div>
+
+                <div class="mini-baymax" title="Hover me!">
+                    <div class="mb-say-hi">Hi!</div>
+                    <div class="mb-head">
+                        <div class="mb-eyes"><div class="line"></div></div>
+                    </div>
+                    <div class="mb-body">
+                        <div class="mb-arm left"></div>
+                        <div class="mb-arm right"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="research">
+        <h2 class="section-title">Research Interests</h2>
+        <div class="research-grid">
+            <div class="research-card">
+                <div class="research-icon">🦿</div>
+                <h3 class="research-title">Assistive Robotics (Sign Language HRI)</h3>
+            </div>
+            <div class="research-card">
+                <div class="research-icon">🩸</div>
+                <h3 class="research-title">Targeted Drug Delivery & Biofluids (CFD/LBM)</h3>
+            </div>
+            <div class="research-card">
+                <div class="research-icon">🌿</div>
+                <h3 class="research-title">Bio-Inspired & Soft Actuation</h3>
+            </div>
+            <div class="research-card">
+                <div class="research-icon">🔬</div>
+                <h3 class="research-title">Microfluidic Point-of-Care Systems</h3>
+            </div>
+        </div>
+    </section>
+
+    <section id="publications">
+        <h2 class="section-title">Publications</h2>
+        <div class="pub-container">
+            <div class="pub-card info-card">
+                <div class="pub-icon">📄</div>
+                <div class="pub-info">
+                    <h3 class="pub-title">"Design and Optimization of a Passive Microfluidic Channel for Circulating Tumor Cell Separation Using DOE and Genetic Algorithm"</h3>
+                    <span class="pub-status">Accepted as a Poster in MicroTAS 2025</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience">
+        <h2 class="section-title">Research & Experience</h2>
+        <div class="timeline">
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content info-card">
+                    <div class="exp-media-bg">
+                        <img src="nanooooo.png" alt="Nano-Bioengineering Lab">
+                    </div>
+
+                    <div class="exp-content-wrapper">
+                        <h3 class="tl-role">Research Assistant</h3>
+                        <p class="tl-lab">Nano-Bioengineering Lab (Sharif University of Technology)</p>
+                        <p class="tl-desc">"Simulated microfluidic cell sorting using COMSOL and MATLAB. I also served as the lab's freeze-dryer operator and teamed up on projects involving PCR, drug delivery, nanotubes, and hydrogels."</p>
+                        <div class="item-skills">
+                            <span class="mini-badge">COMSOL Multiphysics</span>
+                            <span class="mini-badge">Freeze-dryer</span>
+                            <span class="mini-badge">Hydrogel Synthesis</span>
+                            <span class="mini-badge">NAMD & VMD</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content info-card">
+                    <div class="exp-media-bg">
+                        <img src="rasaaa.png" alt="Social Robotics Lab">
+                    </div>
+
+                    <div class="exp-content-wrapper">
+                        <h3 class="tl-role">Research Assistant</h3>
+                        <p class="tl-lab">Social and Cognitive Robotics Lab (Sharif University of Technology)</p>
+                        <p class="tl-desc">"I was hands-on with collecting and processing sign language data for an assistive humanoid robot designed for the deaf and hard of hearing. I also helped evaluate Human-Robot Interactions (HRI) using VR platforms."</p>
+                        <div class="item-skills">
+                            <span class="mini-badge">VR Integration</span>
+                            <span class="mini-badge">HRI</span>
+                            <span class="mini-badge">Machine Learning</span>
+                            <span class="mini-badge">Arduino</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content info-card">
+                    <div class="exp-media-bg">
+                        <img src="cast.jpg" alt="CAST Lab">
+                    </div>
+
+                    <div class="exp-content-wrapper">
+                        <h3 class="tl-role">Research Assistant</h3>
+                        <p class="tl-lab">Center of Advanced Systems and Technologies (CAST), University of Tehran</p>
+                        <p class="tl-desc">"exciting opportunity to work on the Surena humanoid robot. focused on designing the mechanical arm architectures and conducting kinematic and structural analyses for its grasping mechanisms."</p>
+                        <div class="item-skills">
+                            <span class="mini-badge">SolidWorks</span>
+                            <span class="mini-badge">Simulink</span>
+                            <span class="mini-badge">ROS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content info-card">
+                    <div class="exp-media-bg">
+                        <img src="drr.jpg" alt="Dr. Robot">
+                    </div>
+
+                    <div class="exp-content-wrapper">
+                        <h3 class="tl-role">Robotics Simulation Intern</h3>
+                        <p class="tl-lab">Ava & Nima Social Robotics Co. (Dr. Robot)</p>
+                        <p class="tl-desc">"built interactive 3D physics simulations and educational game in Unity (C#) to help university students visualize Dynamics."</p>
+                        <div class="item-skills">
+                            <span class="mini-badge">Unity Engine</span>
+                            <span class="mini-badge">C#</span>
+                            <span class="mini-badge">UI/UX Telemetry</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- --- UPDATED PROJECTS SECTION --- -->
+    <section id="projects">
+        <h2 class="section-title">Selected Projects</h2>
+        <div class="projects-container">
+
+            <div class="project-card">
+                <div class="project-image-container">
+                    <img src="5.png" alt="CFD Neural Network Simulation">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">LBM Simulation of Targeted Drug Delivery</h3>
+                    <p class="project-subtitle">Bio-Engineering / Python / ParaView</p>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-image-container">
+                    <img src="4.png" alt="Kinematic Simulation of Robotic Gripper">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Kinematic Simulation of Robotic Gripper</h3>
+                    <p class="project-subtitle">Simscape / MATLAB / SolidWorks</p>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-image-container">
+                    <img src="2.png" alt="Electromechanical Robotic Finger Control">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Electromechanical Robotic Finger Control</h3>
+                    <p class="project-subtitle">Arduino / PWM Feedback / C++</p>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-image-container">
+                    <img src="3.png" alt="Real-Time IMU Pedometer Signal Processing">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Real-Time IMU Pedometer Signal Processing</h3>
+                    <p class="project-subtitle">Python / Arduino / Digital Filtering</p>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-image-container">
+                    <img src="1.png" alt="Partial Discharge Detection via UV Spectrum">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Partial Discharge Detection via UV Spectrum (Ojan Electronic Co.)</h3>
+                    <p class="project-subtitle">Computer Vision / Python</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="teaching">
+        <h2 class="section-title">Teaching & Leadership</h2>
+        <div class="list-grid">
+            <div class="list-card">
+                <div class="list-icon">🧬</div>
+                <div>
+                    <span class="list-text">Bioengineering</span>
+                    <span class="list-subtext">Sharif University of Technology</span>
+                </div>
+            </div>
+            <div class="list-card">
+                <div class="list-icon">📐</div>
+                <div>
+                    <span class="list-text">Statics</span>
+                    <span class="list-subtext">Sharif University of Technology</span>
+                </div>
+            </div>
+            <div class="list-card">
+                <div class="list-icon">🌡️</div>
+                <div>
+                    <span class="list-text">Thermodynamics I</span>
+                    <span class="list-subtext">Sharif University of Technology</span>
+                </div>
+            </div>
+            <div class="list-card">
+                <div class="list-icon">⚙️</div>
+                <div>
+                    <span class="list-text">Machining Workshop</span>
+                    <span class="list-subtext">Sharif University of Technology (CNC G-Code, Laser Cutting)</span>
+                </div>
+            </div>
+            <div class="list-card">
+                <div class="list-icon">⚛️</div>
+                <div>
+                    <span class="list-text">Physics Olympiad Tutor</span>
+                    <span class="list-subtext">NODET High School</span>
+                </div>
+            </div>
+            <div class="list-card">
+                <div class="list-icon">🤖</div>
+                <div>
+                    <span class="list-text">Robotics Instructor & Mentor</span>
+                    <span class="list-subtext">Educational High School Workshops (LEGO EV3)</span>
+                </div>
+            </div>
+            <div class="list-card">
+        </div>
+    </section>
+
+    <section id="honors">
+        <h2 class="section-title">Honors</h2>
+        <div class="list-grid">
+            <div class="list-card">
+                <div class="list-icon">🏆</div>
+                <div>
+                    <span class="list-text">Ranked 126th Nationwide</span>
+                    <span class="list-subtext">Among the top 0.09 percent Iranian National University Entrance Exam</span>
+                </div>
+            </div>
+            <div class="list-card">
+                <div class="list-icon">🥈</div>
+                <div>
+                    <span class="list-text">2nd Place - JobTab Tech Startup Event</span>
+                    <span class="list-subtext">National Tech Startup (Electrical & Mechanical)</span>
+                </div>
+            </div>
+            <div class="list-card">
+                <div class="list-icon">🥇</div>
+                <div>
+                    <span class="list-text">Top-Performing Team</span>
+                    <span class="list-subtext">Tornomech Competition 2025</span>
+                </div>
+            </div>
+            <div class="list-card">
+                <div class="list-icon">🏅</div>
+                <div>
+                    <span class="list-text">National Physics Olympiad Semi-Finalist</span>
+                    <span class="list-subtext">Qualified for Stage 2 (Top 80 in Iran)</span>
+
+                </div>
+            </div>
+            <div class="list-card"></div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2 class="section-title">Get In Touch</h2>
+        <div class="contact-container">
+            <div class="contact-card">
+                <div class="contact-text-wrap">
+                    <div class="contact-icon">📬</div>
+                    <h3 class="contact-title">Let's Connect</h3>
+                    <p class="contact-desc">"I'm always open to new connections. Reach out for collaborations, questions, or just to grab a virtual coffee and say hi!"</p>
+                </div>
+                <div class="email-buttons">
+                    <a href="mailto:inaz_izadi@mech.sharif.edu" class="contact-email-btn">
+                        ✉️ inaz_izadi@mech.sharif.edu
+                    </a>
+                    <a href="mailto:inazizadi05@gmail.com" class="contact-email-btn secondary">
+                        ✉️ inazizadi05@gmail.com
+                    </a>
+                    <a href="https://www.linkedin.com/in/inaz-izadi/" class="contact-email-btn" target="_blank">
+                        🔗 linkedin.com/in/inaz-izadi/
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p class="footer-text">Designed for Inaz Izadi | Mechanical Engineering</p>
+    </footer>
+
+    <!-- --- JavaScript (Dark Mode & Mouse Glow) --- -->
+    <script>
+        // 1. Mouse Glow Effect
+        const glow = document.getElementById('glow');
+        if (glow) {
+            document.addEventListener('mousemove', (e) => {
+                requestAnimationFrame(() => {
+                    glow.style.left = e.clientX + 'px';
+                    glow.style.top = e.clientY + 'px';
+                });
+            });
+        }
+
+        // 2. Dark Mode Toggle
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const currentTheme = localStorage.getItem('theme');
+
+        if (currentTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeToggleBtn.textContent = '☀️';
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                themeToggleBtn.textContent = '☀️';
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeToggleBtn.textContent = '🌙';
+            }
+        });
+    </script>
+
+</body>
+</html>
